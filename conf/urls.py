@@ -16,7 +16,8 @@ from org import views as org_views
 from org.views import RestrictedView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('jara/', admin.site.urls),
     # home
     path('', core_views.home, name='home'),
     path('dar', TemplateView.as_view(template_name="giver/info.html")),
@@ -38,6 +39,8 @@ urlpatterns = [
     path('donaciones/<int:id>', org_views.view_donation_center, name='donaciones-detail'),
     # volunteer
     path('voluntario', TemplateView.as_view(template_name="volunteer/form.html"), name='voluntario'),
+    # stats
+    path('stats', core_views.stats, name='stats'),
     # login/logout
     path('accounts/', include('django.contrib.auth.urls')),
     # ollas populares

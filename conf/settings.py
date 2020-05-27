@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'django_filters',
     'simple_history',
-    'pipeline'
+    'pipeline',
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +116,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+
+)
 
 LANGUAGE_CODE = 'es'
 
