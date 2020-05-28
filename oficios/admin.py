@@ -1,7 +1,7 @@
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
-from oficios.models import Oficio
+from oficios.models import (Oficio, Category)
 
 
 def unresolve(modeladmin, request, queryset):
@@ -42,3 +42,4 @@ class OficioAdmin(LeafletGeoAdmin):
     actions = [resolve, unresolve, deactivate, activate]
 
 admin.site.register(Oficio, OficioAdmin)
+admin.site.register(Category)

@@ -17,6 +17,16 @@ from core.models import User
 logger = logging.getLogger(__name__)
 THUMBNAIL_BASEWIDTH = 500
 
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, primary_key=True)
+    color = models.CharField(max_length=10, default="#000000")
+    icon = models.CharField(max_length=30, null=True, blank=True)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+
 # Create your models here.
 class Oficio(models.Model):
     title = models.CharField(
@@ -62,7 +72,7 @@ class Oficio(models.Model):
     downvotes = models.IntegerField(default=0, blank=True)
     city = models.CharField(max_length=50, blank=True, default="", editable=False)
     city_code = models.CharField(max_length=50, blank=True, default="", editable=False)
-    # categories = models.ManyToManyField(Category, blank=True)
+    categories = models.ManyToManyField(Category, blank=True)
     search_vector = SearchVectorField()
     history = HistoricalRecords()
     # objects = HelpRequestQuerySet.as_manager()

@@ -19,6 +19,7 @@ class OficioForm(forms.ModelForm):
         fields = (
             "title",
             "message",
+            "categories",
             "name",
             "phone",
             "location",
@@ -42,6 +43,7 @@ class OficioForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "input"}),
             "phone": forms.TextInput(attrs={"class": "input", "type": "tel"}),
             "address": forms.TextInput(attrs={"class": "input"}),
+            'categories': forms.SelectMultiple(attrs={"style": "display:none;"}),
         }
         error_messages = {
             NON_FIELD_ERRORS: {

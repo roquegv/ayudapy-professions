@@ -51,7 +51,18 @@ def oficio_form(request):
             return redirect("oficio-detail", id=new_oficio.id)
     else:
         form = OficioForm()
-    return render(request, "oficios/create.html", {"form": form})
+
+    selected_categories = []
+    if form.is_bound:
+        for field in form.visible_fields():
+            if field.name == 'categories':
+                for category in field.subwidgets:
+                    if category.data['selected']:
+                        selected_categories.append(category.data['value'])
+                break
+
+    context = {"form": form, 'selected_categories': selected_categories}
+    return render(request, "oficios/create.html", context)
 
 
 def view_oficio(request, id):
