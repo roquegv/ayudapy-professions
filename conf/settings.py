@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'simple_history',
     'pipeline',
     'admin_honeypot',
+    'oficios'
 ]
 
 MIDDLEWARE = [
@@ -215,6 +216,12 @@ PIPELINE = {
                     'scripts/list-ollas.js',
                 ),
                 'output_filename': 'scripts/list-ollas.min.js',
+        },
+        'list-oficios.js': {
+                'source_filenames': (
+                    'scripts/list-oficios.js',
+                ),
+                'output_filename': 'scripts/list-oficios.min.js',
         },
         'leaflet-patch.js': {
                 'source_filenames': (

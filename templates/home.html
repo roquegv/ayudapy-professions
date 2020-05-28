@@ -6,23 +6,23 @@
     {% if not perms.org.add_donationcenter %}
     <div class="columns is-centered">
         <div class="column is-3">
-            <a href="/recibir">
+            <a href="/nuevo-oficio">
                 <article class="tile is-child notification has-text-centered" style="background-color: #ffb852; color: white;">
-                    <p class="title is-4">{% trans "I need help!" %}</p>
-                    <p class="subtitle is-size-7">{% trans "Post your request for people to see it" %}</p>
+                    <p class="title is-4">Tengo un Oficio</p>
+                    <p class="subtitle is-size-7">Registra tu oficio para que otros puedan verlo</p>
                 </article>
             </a>
         </div>
         <div class="column is-3">
-            <a href="/dar">
+            <a href="/oficios">
                 <article class="tile is-child notification has-text-centered" style="background-color: #4cd36f; color: white;">
-                    <p class="title is-4">{% trans "I want to help!" %}</p>
-                    <p class="subtitle is-6 is-size-7">{% trans "Find someone close to you to help" %}</p>
+                    <p class="title is-4">Ver Oficios</p>
+                    <p class="subtitle is-6 is-size-7">Busca oficios más cercanos</p>
                 </article>
             </a>
         </div>
     </div>
-    <div class="columns is-centered">
+    <!-- <div class="columns is-centered">
         <div class="column is-3">
             <a href="/donaciones">
                 <article class="tile is-child notification has-text-centered" style="background-color: #6e6bd1; color: white;">
@@ -39,7 +39,7 @@
                 </article>
             </a>
         </div>
-    </div>
+    </div> -->
     {% else %}
     <div class="columns is-centered">
         <div class="column is-4">

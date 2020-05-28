@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from conf import api_urls
 from core import views as core_views
 from ollas import views as ollas_views
+from oficios import views as oficios_views
 from org import views as org_views
 from org.views import RestrictedView
 
@@ -49,6 +50,12 @@ urlpatterns = [
     path('ollas/<int:id>', ollas_views.view_olla, name="olla-detail"),
     path('ollas_ciudad/<slug:city>', ollas_views.list_by_city, name='ollas-by-city'),
     path('ollas', ollas_views.list_ollas, name="olla-list"),
+    # oficios
+    # path('oficio', TemplateView.as_view(template_name="oficios/info.html")),
+    path('nuevo-oficio', oficios_views.oficio_form, name="oficio-form"),
+    path('oficios/<int:id>', oficios_views.view_oficio, name="oficio-detail"),
+    path('oficios_ciudad/<slug:city>', oficios_views.list_by_city, name='oficios-by-city'),
+    path('oficios', oficios_views.list_oficios, name="oficio-list"),
 ]
 urlpatterns += api_urls.urlpatterns
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

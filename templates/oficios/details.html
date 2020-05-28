@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block title %} Oficio #{{oficio.id}} - AyudaPy{% endblock %} 
+
+{% block fb-title %} Oficio #{{oficio.id}} - {{ oficio.title}} {% endblock %} 
+{% block fb-description %} {{oficio.message}} {% endblock %} 
+
+{% load leaflet_tags %} 
+{% load static %}
+{% load l10n %}
+{% load humanize %}
+{% block bread %}
+  <nav class="breadcrumb  has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+      <li>
+        <a href="/">
+          <span class="icon is-small">
+            <i class="fas fa-home" aria-hidden="true"></i>
+          </span>
+          <span>Inicio</span>
+        </a>
+      </li>
+      <!-- <li><a href="/dar">Info ayudar</a></li> -->
+      <li><a href="/oficios">Oficios</a></li>
+      <li class="is-active"><a href="#" aria-current="page">Oficio #{{oficio.id}}</a></li>
+      </ul>
+  </nav>
+{% endblock bread %}
+{% block content%}
+<div class="columns is-centered">
+    <div class="column is-half">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-success is-half" id='msg{{ forloop.counter }}'>
+                <button class="delete" onclick="document.getElementById('msg{{ forloop.counter }}').style.display = 'none';"></button>
+                    <span class="is-5">{{ message }}</span>
+                    <p><span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
+                    Podés compartir tu Oficio haciendo click en los botones</p>
+            {% include 'includes/share_buttons.html'%}
+            </div>
+        {% endfor %}
+      {% endif %}
+        <div class="subtitle center is-3">
+      {% if oficio.resolved %}
+        <a class="has-text-primary" href="/oficios/{{oficio.id}}"><strike>Oficio #{{oficio.id}}</strike></a>
+      {% else %}
+        <a class="has-text-primary" href="/oficios/{{oficio.id}}">Oficio #{{oficio.id}}</a>
+      {% endif %}
+        </div>
+    </div>
+</div>
+<div class="columns is-centered">
+    <div class="column is-four-fifths">
+{% if not oficio.active %}
+      <div class="notification is-danger is-half" >
+        <span class="is-5"><p class="is-size-2">Oficio inactivo</p>
+          <p class="has-text-white-ter">Oficio dado de baja o repetido, solo 1 Oficio activo por número de teléfono</p>
+        </span>
+    </div>
+    {% if active_oficios %}
+    <p class="is-size-4">Pero encontramos esta Oficio activa con el mismo número: <li><a href="/oficios/{{ active_oficios.0.id }}">#{{ active_oficios.0.id }}</a></li> </p>
+    
+        {% if user.is_authenticated %}
+          Otras oficios activas del mismo numero
+          {% for act in active_oficios %}
+          <li><a href="/oficios/{{ act.id }}">#{{ act.id }}</a></li>
+          {% endfor %}
+        {% endif%}
+
+    {% endif %}
+{% else %}
+      {% if oficio.resolved %}
+      <div class="notification is-success is-half" >
+            <span class="is-5"><p class="is-size-2">¡Pedido ya resuelto!</p>
+              <p class="has-text-white-ter">El pedido de ayuda ya fue marcado como asistido</p>
+            </span>
+      </div>
+      {% endif %}
+        <div class="card">
+      {% if not oficio.resolved %}
+        <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4">{{ oficio.title}}</p>
+      {% else %}
+      <header class="card-header has-background-light is-light">
+            <p class="card-header-title is-size-4"><strike>{{ oficio.title}}</strike></p>
+      {% endif %}
+        </header>
+        <section class="card-content">
+                    <p class="has-text-right is-size-7" title="{{oficio.added|naturaltime}}">{{oficio.added}}</p>
+                    <p class="is-size-5">{{oficio.message|linebreaksbr}}</p>
+                    {% if oficio.picture %}
+                    <hr>
+                      <figure class="image is-small"> 
+                        <a href="/media/{{oficio.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ oficio.name}}</p>
+                {% if not oficio.resolved %}
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4">
+                      <a href="tel:{{oficio.phone}}">
+                        <img src="data:image/jpeg;base64,{{phone_number_img}}">
+                      </a>
+                        &nbsp;
+                        <a href="https://wa.me/{{ whatsapp }}" target="_blank" class="button is-medium is-success is-outlined">
+                            <span class="icon is-small">
+                              <i class="fab fa-whatsapp"></i>
+                            </span>
+                            <span>Contactar vía WhatsApp</span>
+                        </a>
+                    </p>
+                    {% if oficio.address %}
+                      <p class="subtitle">Dirección:</p>
+                      <p class="title is-4">{{oficio.address}}</p>
+                    {% endif %}
+                    <p class="subtitle">Ciudad: </p>
+                    <p class="title is-4">
+                        <a href="/oficios_ciudad/{{oficio.city_code}}">{{oficio.city}}</a>
+                    </p>
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{oficio.location.y|unlocalize}},{{oficio.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+                {% endif %}
+{% endif %}
+        </section>
+                    {% include 'includes/vote_button.html' %}
+
+    </div>
+
+                {% comment %} <article class="tile is-child is-box">
+                    <p class="title is-4">{{ oficio.title}}</p>
+                    <p class="subtitle">{{oficio.message|linebreaks}}</p>
+                    <hr>
+                    <p class="subtitle">Nombre:</p>
+                    <p class="title is-4">{{ oficio.name}}</p>
+                    <p class="subtitle">Contacto:</p>
+                    <p class="title is-4"><a href="tel:{{oficio.phone}}">{{oficio.phone}}</p></a>
+                    {% if oficio.address %}
+                      <p class="subtitle">Dirección:</p>
+                      <p class="title is-4">{{oficio.address}}</p>
+                    {% endif %}
+                    {% if oficio.picture %}
+                      <figure class="image is-small"> 
+                        <a href="/media/{{oficio.picture}}">
+                          <img class="has-ratio" src="{{thumbnail}}"/>
+                        </a>
+                      </figure>
+                    {% endif %}
+                     <p class="subtitle">Ubicación:
+                     {% leaflet_map "main" callback="main_map_init" %}
+                     </p>
+                     <a href="https://www.google.com/maps/search/?api=1&query={{oficio.location.y|unlocalize}},{{oficio.location.x|unlocalize}}" target="_blank">
+                       <button class="button is-medium is-fullwidth is-link is-light">
+                            <span class="icon is-medium">
+                            <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                            <span>Abrir en Google Maps</span>
+                        </button>
+                     </a>
+                </article> {% endcomment %}
+                <hr>
+                <label class="label has-text-success">
+                    <span class="icon is-medium"><i class="fas fa-hand-point-down"></i></span>
+                        Podés compartir esta Oficio haciendo click en los botones
+                    </label>
+                <div class="is-fullwidth">
+                {% include 'includes/share_buttons.html'%}
+                </div>
+          
+
+        
+
+        <script type="text/javascript">
+            function main_map_init(map, options) {
+                // Use Leaflet API here
+                {% autoescape off %}
+                var lon = {{ oficio.location.x|unlocalize }};
+                var lat = {{ oficio.location.y|unlocalize }};
+                data = {{ oficio.location.geojson }}
+                {% endautoescape %}
+                    // zoom to point & add it to map
+                map.setView([lat, lon], 14);
+                //L.marker([lat, lon]).addTo(map);
+                L.geoJson(data).addTo(map)
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

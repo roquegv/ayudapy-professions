@@ -2,17 +2,16 @@
 {% load i18n %}
 <footer class="footer">
     <nav class="columns is-vcentered">
-        <!-- Left side -->
-        <div class="column is-one-fifth">
+        <!-- <div class="column is-one-fifth">
             <p class="level-item">
             <ul class="list is-fullwidth-mobile has-text-left-desktop has-text-centered-mobile">
                 <a class="list-item" href="{% url 'legal' %}">{% trans "Terms of use" %}</a>
                 <a class="list-item" href="{% url 'general_faq' %}">{% trans "Frequently asked questions" %}</a>
                 <a class="list-item" href="{% url 'contact_us' %}">{% trans "Contact information" %}</a>
             </ul>
-        </div>
+        </div> -->
 
-        <div class="column is-three-fifth">
+        <!-- <div class="column is-three-fifth">
             <div class="columns is-mobile is-centered">
                 <figure class="image is-96x96">
                     <a href="{% url 'login'%}?next={{request.path}}">
@@ -28,15 +27,15 @@
                 </p>
                 {% endif %}
             </div>
-        </div>
+        </div> -->
 
         <!-- Right side -->
-        <div class="column is-one-fifth">
+        <div class="column has-text-right">
             <!-- <div class="level-item"> -->
             <p class="column is-size-7 has-text-centered has-text-right-desktop is-family-monospace">
-                {% trans "Created by" %} <a href="https://melizeche.com">Marcelo Elizeche</a>
-                <br> {% trans "License" %} <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
-                <br><a href="https://github.com/melizeche/ayudapy" target="_blank" rel="noopener noreferrer">{% trans "Source code" %}<span class="icon"><i class="fab fa-github" title="logo Github"></i></span></a>
+                Fork de <a target="_blank" href="https://ayudapy.org">AyudaPy</a>, modificado por <a target="_blank" href="https://www.weblab.com.py">WebLab</a>
+                <br> Licencia <a href="https://opensource.org/licenses/GPL-3.0">GPLv3</a>
+                <br><a href="https://github.com/melizeche/ayudapy" target="_blank" rel="noopener noreferrer">Código Fuente<span class="icon"><i class="fab fa-github" title="logo Github"></i></span></a>
             </p>
             <!-- </div> -->
         </div>
