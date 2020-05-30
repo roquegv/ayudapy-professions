@@ -12,7 +12,7 @@ import json
 import datetime
 import base64
 
-from .models import Oficio, OficioOwner
+from .models import Oficio, OficioOwner, Category
 from .forms import OficioForm
 
 from core.utils import text_to_image, image_to_base64
@@ -52,6 +52,7 @@ def oficio_form(request):
     else:
         form = OficioForm()
 
+    categories = Category.objects.filter(active=True)
     selected_categories = []
     if form.is_bound:
         for field in form.visible_fields():
@@ -61,7 +62,7 @@ def oficio_form(request):
                         selected_categories.append(category.data['value'])
                 break
 
-    context = {"form": form, 'selected_categories': selected_categories}
+    context = {"form": form, 'selected_categories': selected_categories, 'categories': categories}
     return render(request, "oficios/create.html", context)
 
 
@@ -132,7 +133,8 @@ def view_oficio(request, id):
 
 def list_oficios(request):
     cities = [(i['city'], i['city_code']) for i in Oficio.objects.all().values('city', 'city_code').distinct().order_by('city_code')]
-    context = {"list_cities": cities}
+    categories = Category.objects.filter(active=True)
+    context = {"list_cities": cities, "categories": categories}
     return render(request, "oficios/list.html", context)
 
 

@@ -84,7 +84,7 @@
 		class="input is-small"
 		type="text"
 		name="search-text-field"
-		placeholder="Búsqueda por título o descripción, Ejemplo: Pañal"
+		placeholder="Búsqueda por título o descripción, Ejemplo: Mecánico"
 	      >
 	    </div>
 	    <div class="control" >
@@ -96,7 +96,34 @@
           </div>
         </div>
 
+        <script type="text/javascript">
+          function toggleFiltros(){
+            var x = document.getElementById("filtros");
+            if (x.style.display === "none") {
+              x.style.display = "flex";
+            } else {
+              x.style.display = "none";
+            }
+          }
+
+          function onSwitchClick(name){
+            var option = document.querySelector('input[value="' + name + '"]')
+            option.selected = !option.selected
+          }
+        </script>
+        
+        <button class="button is-fullwidth" onclick="toggleFiltros()">Filtros</button>
+        <div class="columns is-mobile is-multiline" id="filtros" style="display: none;">
+            {% for cat in categories %}
+            <div class="column is-3-desktop is-3-mobile ">
+                <p class="is-size-7">{{cat.name}}</p>
+                <input type="checkbox" value="{{cat.code}}" onclick="onSwitchClick('{{cat.code}}')" id="{{cat.code}}" name="categories" class="switch is-info">
+                <label for="{{cat.code}}"></label>
+            </div>
+            {% endfor %}
+        </div>
       <br>
+
 
         <div class="panel is-info">
           <p class="panel-heading">

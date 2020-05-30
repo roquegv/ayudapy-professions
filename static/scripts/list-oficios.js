@@ -44,6 +44,7 @@
   ListOficiosView.prototype.switchClusteringInit = switchClusteringInit;
   ListOficiosView.prototype.geoFindMe = geoFindMe;
   ListOficiosView.prototype.getQuery = getQuery;
+  ListOficiosView.prototype.filterCotegories = filterCotegories;
   ListOficiosView.prototype.requestGeoData = requestGeoData;
   ListOficiosView.prototype.loadMarkersAndGroup = loadMarkersAndGroup;
   ListOficiosView.prototype.loadMarkers = loadMarkers;
@@ -80,6 +81,10 @@
     document
       .getElementById('search-button')
       .addEventListener('click', this.getQuery.bind(this));
+
+    document.querySelectorAll("#filtros input").forEach((e) => {
+      e.addEventListener('click', this.filterCotegories.bind(this));
+    })
 
     // document
     //   .getElementById('switchNormal')
@@ -150,7 +155,20 @@
     this.requestGeoData();
   }
 
-
+  function filterCotegories() {
+    var categories = ""
+    document.querySelectorAll("#filtros input").forEach((e) => {
+      if (e.selected){
+        let coma = ","
+        if (categories === ""){
+          coma = ""
+        }
+        categories += coma + e.value
+      }
+    })
+    this.categories = categories
+    this.requestGeoData();
+  }
 
   function requestGeoData() {
     this.loadingIndicator.show();
@@ -161,6 +179,10 @@
     if (vm.currentSearchString && vm.currentSearchString.length >= 3) {
       searchUrl += '&search_fields=message&search=' + vm.currentSearchString;
     }
+
+    if (vm.categories){
+      searchUrl += '&categories=' + vm.categories
+    }    
 
     fetch(searchUrl)
       .then(function (response) {
